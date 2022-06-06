@@ -12,14 +12,15 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "DejaVu Sans Mono:size=12" };
-static const char dmenufont[]       = "DejaVu Sans Mono:size=12";
-static const char col_gray1[]       = "#222222";
+static const char *fonts[]          = { "Iosevka Nerd Font Mono:size=12" };
+static const char dmenufont[]       = "Iosevka Nerd Font Mono:size=16";
+static const char col_gray1[]       = "#333333";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
 static const char col_chrome[] 		= "#ffd000";
+static const char col_green[] 		= "#66aa44";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -65,12 +66,13 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-l", "20", "-c",  "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_green, "-sf", col_gray1, NULL };
 static const char *termcmd[]  = { "kitty", NULL };
-static const char *browser[]  = { "brave-browser", NULL };
+static const char *browser[]  = { "firefox", NULL };
 static const char *files[]  = { "kitty", "-e", "nnn", NULL };
-static const char *volup[]  = { "volcontrol", "+5%", NULL };
-static const char *voldown[]  = { "volcontrol", "-5%", NULL };
+static const char *volup[]  = { "pactl", "set-sink-volume", "@DEFAULT_SINK@",  "+5%", NULL };
+static const char *voldown[]  = { "pactl", "set-sink-volume", "@DEFAULT_SINK@",  "-5%", NULL };
+static const char *mutevol[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
 static const char *screenshot[] = { "scrot", "/home/nw/Pictures/Screenshot_%Y%m%d_%H%M%S.png", NULL };
 static const char *cscreenshot[] = { "scrot", "-s", "/home/nw/Pictures/Screenshot_%Y%m%d_%H%M%S.png", NULL };
 
@@ -82,6 +84,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_e,      spawn,          {.v = files } },
 	{ 0,         XF86XK_AudioLowerVolume,      spawn,          {.v = voldown } },
 	{ 0,         XF86XK_AudioRaiseVolume,      spawn,          {.v = volup } },
+	{ 0,         XF86XK_AudioMute,      	   spawn,          {.v = mutevol } },
 	{ 0,             				XK_Print,  spawn,          {.v = screenshot } },
 	{ ShiftMask,             		XK_Print,  spawn,          {.v = cscreenshot } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
